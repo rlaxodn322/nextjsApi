@@ -6,6 +6,10 @@ import withPWA from 'next-pwa';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    // Enables the styled-components SWC transform
+    styledComponents: true,
+  },
   // 기존 Next.js 설정
 };
 

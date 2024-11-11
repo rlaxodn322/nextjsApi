@@ -73,6 +73,7 @@ export interface PetData1 {
 }
 
 export interface WeatherData1 {
+  weatherType(weatherType: any): string | undefined;
   temperature: any;
   humidity: any;
   precipitation: any;

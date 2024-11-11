@@ -14,11 +14,11 @@ const FooterContainer = styled.div`
   @media (max-width: 768px) {
     padding: 5px;
   }
-
+/* 
   @media (max-width: 480px) {
     flex-direction: column;
     align-items: center;
-  }
+  } */
 `;
 
 const Footer: React.FC = () => {

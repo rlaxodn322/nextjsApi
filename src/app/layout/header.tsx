@@ -17,10 +17,10 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+/* 
   @media (max-width: 768px) {
     flex-direction: column;
-  }
+  } */
 `;
 
 const LogoContainer = styled.div`
@@ -80,27 +80,13 @@ const App: React.FC = () => (
         <Link href="/weather/01">
           <NavLink>날씨</NavLink>
         </Link>
-        {/* <Link href="/board/01">
-          <NavLink>게시판</NavLink>
-        </Link>
-        <Link href="/shop/01">
-          <NavLink>쇼핑몰</NavLink>
-        </Link>
-        <Link href="/chat/01">
-          <NavLink>채팅방</NavLink>
-        </Link>
-        <Link href="/groupchat/01">
-          <NavLink>그룹챗</NavLink>
-        </Link>
-        <Link href="/community/01">
-          <NavLink>커뮤니티</NavLink>
-        </Link>
+       
         <Link href="/toilet/01">
           <NavLink>똥싸개</NavLink>
         </Link>
         <Link href="/adst/01">
           <NavLink>명소</NavLink>
-        </Link> */}
+        </Link>
       </NavLinks>
     </NavContainer>
   </HeaderContainer>

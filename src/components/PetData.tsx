@@ -3,6 +3,7 @@ import { fetchPetData1 } from '../apis/pet';
 import { useRecoilState } from 'recoil';
 import { petState } from '../recoil/atoms/state';
 import styled from 'styled-components';
+import axios from 'axios';
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -141,12 +142,6 @@ const LoadingSpinner = styled.div`
   margin: 0 auto; /* Center the spinner */
 `;
 
-const spin = `
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`;
 const PetData = () => {
   const [data, setData] = useRecoilState(petState);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -157,6 +152,7 @@ const PetData = () => {
   const [error, setError] = useState<string | null>(null); // 오류 상태 추가
   const [selectedRegion, setSelectedRegion] = useState<string>('6110000'); // 선택된 지역 상태 추가
   const [selectedRows, setSelectedRows] = useState<number>(10);
+
   const regions = [
     { name: '서울특별시', code: '6110000' },
     { name: '부산광역시', code: '6260000' },
@@ -191,11 +187,10 @@ const PetData = () => {
     setSelectedRegion(regionCode);
   };
 
-  const openModal = (pet: any) => {
+  const openModal = async (pet: any) => {
     setSelectedPet(pet);
     setModalIsOpen(true);
   };
-
   const closeModal = () => {
     setModalIsOpen(false);
   };
@@ -276,24 +271,23 @@ const PetData = () => {
       {modalIsOpen && (
         <ModalOverlay>
           <ModalContent>
-            {selectedPet && (
-              <div>
-                <h2>{selectedPet.kindCd}</h2>
-                <img
-                  src={selectedPet.popfile}
-                  alt={selectedPet.kindCd}
-                  style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                />
-                <p>색상: {selectedPet.colorCd}</p>
-                <p>성별: {selectedPet.sexCd}</p>
-                <p>특징: {selectedPet.specialMark}</p>
-                <p>발견 장소: {selectedPet.happenPlace}</p>
-                <p>보호센터: {selectedPet.careNm}</p>
-                <p>연락처: {selectedPet.careTel}</p>
-                <p>주소: {selectedPet.careAddr}</p>
-                <CloseButton onClick={closeModal}>닫기</CloseButton>
-              </div>
-            )}
+            <h2>
+              {selectedPet?.kindCd} (No.{selectedPet?.desertionNo})
+            </h2>
+            <img
+              src={selectedPet.popfile}
+              alt={selectedPet.kindCd}
+              style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+            />
+            <p>색상: {selectedPet.colorCd}</p>
+            <p>성별: {selectedPet.sexCd}</p>
+            <p>특징: {selectedPet.specialMark}</p>
+            <p>발견 장소: {selectedPet.happenPlace}</p>
+            <p>보호센터: {selectedPet.careNm}</p>
+            <p>연락처: {selectedPet.careTel}</p>
+            <p>주소: {selectedPet.careAddr}</p>
+
+            <CloseButton onClick={closeModal}>닫기</CloseButton>
           </ModalContent>
         </ModalOverlay>
       )}
