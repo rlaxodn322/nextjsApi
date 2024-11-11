@@ -3,7 +3,7 @@ import { fetchPetData1 } from '../apis/pet';
 import { useRecoilState } from 'recoil';
 import { petState } from '../recoil/atoms/state';
 import styled from 'styled-components';
-
+import { Spin } from '../components/spin';
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -132,6 +132,22 @@ const CloseButton = styled.button`
     margin-top: 10px;
   }
 `;
+const LoadingSpinner = styled.div`
+  border: 4px solid #f3f3f3; /* Light gray */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin: 0 auto; /* Center the spinner */
+`;
+
+const spin = `
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
 const PetData = () => {
   const [data, setData] = useRecoilState(petState);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -200,9 +216,8 @@ const PetData = () => {
             key={region.code}
             onClick={() => handleRegionClick(region.code)}
             style={{
-              backgroundColor:
-                selectedRegion === region.code ? '#007BFF' : '#FFF',
-              color: selectedRegion === region.code ? '#FFF' : '#333',
+              backgroundColor: selectedRegion === region.code ? '#FFF' : '#FFF',
+              color: selectedRegion === region.code ? '#007BFF' : 'black',
             }}
           >
             {region.name}
@@ -232,7 +247,7 @@ const PetData = () => {
       </ButtonGroup>
 
       {loading ? (
-        <p>로딩 중...</p>
+        <LoadingSpinner />
       ) : error ? (
         <p>{error}</p>
       ) : (
@@ -247,7 +262,6 @@ const PetData = () => {
           ))}
         </CardGrid>
       )}
-
       {modalIsOpen && (
         <ModalOverlay>
           <ModalContent>
