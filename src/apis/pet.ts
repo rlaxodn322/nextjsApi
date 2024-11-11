@@ -15,9 +15,15 @@ export const fetchPetData = async (): Promise<PetData1> => {
     throw new Error('Fail Pet');
   }
 };
-export const fetchPetData1 = async (numOfRows: number): Promise<PetData1> => {
+export const fetchPetData1 = async (
+  numOfRows: number,
+  selectedRegion: string
+): Promise<PetData1> => {
   try {
-    const response = await axios.post('/pet/fetch', { numOfRows });
+    const response = await axios.post('/pet/fetch', {
+      numOfRows,
+      selectedRegion,
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

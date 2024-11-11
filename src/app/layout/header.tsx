@@ -25,7 +25,7 @@ const App: React.FC = () => (
         </div>
         <div style={{ width: '80%', display: 'flex' }}>
           <Link href="/pet/01">
-            <div style={divstyle}>애완</div>
+            <div style={divstyle}>유기견</div>
           </Link>
           {/* <Link href="/board/01">
             <div style={divstyle}>게시판</div>

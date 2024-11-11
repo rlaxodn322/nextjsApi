@@ -132,7 +132,6 @@ const CloseButton = styled.button`
     margin-top: 10px;
   }
 `;
-
 const PetData = () => {
   const [data, setData] = useRecoilState(petState);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -140,28 +139,41 @@ const PetData = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [numOfRows, setNumOfRows] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // 오류 상태 추가
+  const [selectedRegion, setSelectedRegion] = useState<string>('6110000'); // 선택된 지역 상태 추가
+  const regions = [
+    { name: '서울특별시', code: '6110000' },
+    { name: '부산광역시', code: '6260000' },
+    { name: '대구광역시', code: '6270000' },
+  ];
 
   useEffect(() => {
     const fetchData1 = async () => {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
+      setError(null); // 오류 상태 초기화
       try {
-        const petData: any = await fetchPetData1(numOfRows);
+        const petData: any = await fetchPetData1(numOfRows, selectedRegion);
         setData(petData);
-        console.log('서버에서 온 유기견 데이터', petData);
       } catch (error) {
-        console.error(error);
+        setError('데이터를 가져오는 데 실패했습니다. 다시 시도해주세요.');
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     };
 
     fetchData1();
-  }, [setData, numOfRows]);
-  const handleButtonClick = (rows: any) => {
+  }, [setData, numOfRows, selectedRegion]);
+
+  const handleButtonClick = (rows: number) => {
     if (!loading) {
       setNumOfRows(rows);
     }
   };
+
+  const handleRegionClick = (regionCode: string) => {
+    setSelectedRegion(regionCode);
+  };
+
   const openModal = (pet: any) => {
     setSelectedPet(pet);
     setModalIsOpen(true);
@@ -182,6 +194,22 @@ const PetData = () => {
   return (
     <Container>
       <Title>유기견 위치 안내</Title>
+      <ButtonGroup>
+        {regions.map((region) => (
+          <button
+            key={region.code}
+            onClick={() => handleRegionClick(region.code)}
+            style={{
+              backgroundColor:
+                selectedRegion === region.code ? '#007BFF' : '#FFF',
+              color: selectedRegion === region.code ? '#FFF' : '#333',
+            }}
+          >
+            {region.name}
+          </button>
+        ))}
+      </ButtonGroup>
+
       <SearchBar>
         <Input
           type="text"
@@ -190,14 +218,23 @@ const PetData = () => {
           onChange={handleSearch}
         />
       </SearchBar>
+
       <ButtonGroup>
-        <button onClick={() => setNumOfRows(10)}>10개 보기</button>
-        <button onClick={() => setNumOfRows(100)}>100개 보기</button>
-        <button onClick={() => setNumOfRows(1000)}>1000개 보기</button>
+        <button onClick={() => handleButtonClick(10)} disabled={loading}>
+          10개 보기
+        </button>
+        <button onClick={() => handleButtonClick(100)} disabled={loading}>
+          100개 보기
+        </button>
+        <button onClick={() => handleButtonClick(1000)} disabled={loading}>
+          1000개 보기
+        </button>
       </ButtonGroup>
 
       {loading ? (
         <p>로딩 중...</p>
+      ) : error ? (
+        <p>{error}</p>
       ) : (
         <CardGrid>
           {filteredData.map((pet, index) => (
@@ -210,6 +247,7 @@ const PetData = () => {
           ))}
         </CardGrid>
       )}
+
       {modalIsOpen && (
         <ModalOverlay>
           <ModalContent>
