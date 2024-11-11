@@ -3,7 +3,6 @@ import { fetchPetData1 } from '../apis/pet';
 import { useRecoilState } from 'recoil';
 import { petState } from '../recoil/atoms/state';
 import styled from 'styled-components';
-import { Spin } from '../components/spin';
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -157,6 +156,7 @@ const PetData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null); // 오류 상태 추가
   const [selectedRegion, setSelectedRegion] = useState<string>('6110000'); // 선택된 지역 상태 추가
+  const [selectedRows, setSelectedRows] = useState<number>(10);
   const regions = [
     { name: '서울특별시', code: '6110000' },
     { name: '부산광역시', code: '6260000' },
@@ -183,6 +183,7 @@ const PetData = () => {
   const handleButtonClick = (rows: number) => {
     if (!loading) {
       setNumOfRows(rows);
+      setSelectedRows(rows);
     }
   };
 
@@ -224,7 +225,29 @@ const PetData = () => {
           </button>
         ))}
       </ButtonGroup>
-
+      <ButtonGroup>
+        <button
+          onClick={() => handleButtonClick(10)}
+          disabled={loading}
+          style={{ color: selectedRows === 10 ? '#0078FF' : 'black' }}
+        >
+          10개 보기
+        </button>
+        <button
+          onClick={() => handleButtonClick(100)}
+          disabled={loading}
+          style={{ color: selectedRows === 100 ? '#0078FF' : 'black' }}
+        >
+          100개 보기
+        </button>
+        <button
+          onClick={() => handleButtonClick(1000)}
+          disabled={loading}
+          style={{ color: selectedRows === 1000 ? '#0078FF' : 'black' }}
+        >
+          1000개 보기
+        </button>
+      </ButtonGroup>
       <SearchBar>
         <Input
           type="text"
@@ -233,18 +256,6 @@ const PetData = () => {
           onChange={handleSearch}
         />
       </SearchBar>
-
-      <ButtonGroup>
-        <button onClick={() => handleButtonClick(10)} disabled={loading}>
-          10개 보기
-        </button>
-        <button onClick={() => handleButtonClick(100)} disabled={loading}>
-          100개 보기
-        </button>
-        <button onClick={() => handleButtonClick(1000)} disabled={loading}>
-          1000개 보기
-        </button>
-      </ButtonGroup>
 
       {loading ? (
         <LoadingSpinner />

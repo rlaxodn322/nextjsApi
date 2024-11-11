@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { ApiData, Message, PetData1 } from '../../types/Post';
+import { ApiData, Message, PetData1, WeatherData1 } from '../../types/Post';
 export const state = atom({
   key: 'state',
   default: [],
@@ -23,5 +23,9 @@ export const petState = atom<PetData1[]>({
 
 export const secondToiletState = atom<ApiData[]>({
   key: 'secondToiletState',
+  default: [],
+});
+export const weatherState = atom<WeatherData1[]>({
+  key: 'weatherState',
   default: [],
 });

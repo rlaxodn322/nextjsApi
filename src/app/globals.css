@@ -19,13 +19,24 @@
 body {
   color: rgb(var(--foreground-rgb));
   margin: 0 auto;
-  width: 1200px;
+  max-width: 1200px; /* 최대 너비 설정 */
+  width: 90%; /* 기본 너비 설정 (퍼센티지) */
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+@media (max-width: 768px) {
+  body {
+    width: 95%; /* 화면 크기가 768px 이하일 때 너비 */
+  }
+}
+@media (max-width: 480px) {
+  body {
+    width: 100%; /* 화면 크기가 480px 이하일 때 너비 */
+  }
 }
 
 @layer utilities {

@@ -30,14 +30,12 @@ export interface Message {
 }
 
 export interface ApiData {
-  Publtolt: any;
   data: any;
   lat: number;
   lng: number;
   name: string;
   address: string;
   tel: string;
-
   money: string;
 }
 export interface ApiData2 {
@@ -51,6 +49,7 @@ export interface ApiData2 {
 }
 
 export interface PetData1 {
+
   kindCd?: string;
   popfile?: string;
   desertionNo?: string;
@@ -71,4 +70,24 @@ export interface PetData1 {
   orgNm?: string;
   chargeNm?: string;
   [x: string]: any;
+}
+
+export interface WeatherData1 {
+  temperature: any;
+  humidity: any;
+  precipitation: any;
+  windSpeed: any;
+  windDirection: any;
+  visibility: string;
+  airPressure: string;
+  weatherCode: string;
+  Publtolt: string;
+  data: string;
+  lat: number;
+  lng: number;
+  name: any;
+  address: any;
+  tel: any;
+  money: any;
+  value: string;
 }
