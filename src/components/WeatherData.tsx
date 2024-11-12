@@ -5,12 +5,15 @@ import styled from 'styled-components';
 
 // Styled-components를 사용한 스타일링
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f0f4f8;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 `;
 
 const WeatherGrid = styled.div`
@@ -31,7 +34,7 @@ const WeatherGrid = styled.div`
 `;
 
 const WeatherCard = styled.div`
-  background-color: #f7f9fc;
+  background: linear-gradient(135deg, #f7f9fc 0%, #e1e9f0 100%);
   padding: 20px;
   margin-bottom: 15px;
   border-radius: 15px;
@@ -46,18 +49,38 @@ const WeatherCard = styled.div`
     transform: translateY(-5px);
   }
 `;
+const ToggleButton = styled.button`
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
 const WeatherTitle = styled.h3`
   font-size: 1.5rem;
   color: #2c3e50;
   margin-bottom: 10px;
+  background: linear-gradient(90deg, #ff6f61, #ff8c00);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
 `;
-
 const WeatherDetails = styled.p`
   font-size: 1rem;
   color: #34495e;
   margin: 5px 0;
   text-align: center;
+  letter-spacing: 0.5px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
 `;
 
 const WeatherIcon = styled.img`
@@ -77,6 +100,7 @@ const LoadingContainer = styled.div`
 
 const WeatherData = () => {
   const [weatherData, setWeatherData] = useState<WeatherData1 | null>(null); // 날씨 데이터 상태
+
   const [isCelsius, setIsCelsius] = useState(true);
 
   const toggleTemperatureUnit = () => {
@@ -98,6 +122,7 @@ const WeatherData = () => {
 
           try {
             const data = await fetchWeatherData(lat, lng); // API 호출에 위치 값 전달
+            const data1 = await fetchWeatherData(lat, lng); // API 호출에 위치 값 전달
             setWeatherData(data);
           } catch (error) {
             console.error('날씨 데이터를 가져오는 중 오류 발생:', error);
@@ -110,6 +135,7 @@ const WeatherData = () => {
 
     getLocationAndFetchData(); // 데이터 가져오기
   }, []);
+
   // // 날씨 API 데이터를 가져오는 useEffect
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -155,10 +181,17 @@ const WeatherData = () => {
           <WeatherDetails>
             {' '}
             {formatTemperature(weatherData.temperature.value)}{' '}
-            <button onClick={toggleTemperatureUnit}>
+            <ToggleButton onClick={toggleTemperatureUnit}>
               {' '}
               {isCelsius ? 'Switch to °F' : 'Switch to °C'}{' '}
-            </button>
+            </ToggleButton>
+            <br></br>
+            <strong>시간: </strong>
+            {weatherData.temperature.time}
+            <br></br>
+            <strong>위치: </strong>
+            {weatherData.temperature.location}
+            {/* {formatWeatherItem(weatherData.temperature.location)}  */}
           </WeatherDetails>
         </WeatherCard>
 

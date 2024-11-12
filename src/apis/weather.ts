@@ -20,6 +20,7 @@ export const fetchWeatherData = async (
     throw new Error('Fail weather');
   }
 };
+
 // export const fetchPetData1 = async (
 //   numOfRows: number,
 //   selectedRegion: string

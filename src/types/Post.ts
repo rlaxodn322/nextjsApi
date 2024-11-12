@@ -30,6 +30,7 @@ export interface Message {
 }
 
 export interface ApiData {
+  Publtolt: any;
   data: any;
   lat: number;
   lng: number;

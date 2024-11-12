@@ -17,7 +17,7 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-/* 
+  /* 
   @media (max-width: 768px) {
     flex-direction: column;
   } */
@@ -80,12 +80,15 @@ const App: React.FC = () => (
         <Link href="/weather/01">
           <NavLink>날씨</NavLink>
         </Link>
-       
+
         <Link href="/toilet/01">
           <NavLink>똥싸개</NavLink>
         </Link>
         <Link href="/adst/01">
           <NavLink>명소</NavLink>
+        </Link>
+        <Link href="/grid/01">
+          <NavLink>레이아웃</NavLink>
         </Link>
       </NavLinks>
     </NavContainer>

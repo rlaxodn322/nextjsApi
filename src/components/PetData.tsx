@@ -141,7 +141,24 @@ const LoadingSpinner = styled.div`
   animation: spin 2s linear infinite;
   margin: 0 auto; /* Center the spinner */
 `;
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.5rem;
+  color: #34495e;
+  animation: spin 2s linear infinite;
 
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 const PetData = () => {
   const [data, setData] = useRecoilState(petState);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -253,7 +270,9 @@ const PetData = () => {
       </SearchBar>
 
       {loading ? (
-        <LoadingSpinner />
+        <LoadingContainer>
+          <span> 데이터를 로딩 중입니다...</span>
+        </LoadingContainer>
       ) : error ? (
         <p>{error}</p>
       ) : (
