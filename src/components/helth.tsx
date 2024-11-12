@@ -1,74 +1,81 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import HelthUploadPage from './helthUpload';
 import axios from 'axios';
 
 const Container = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
-  background-color: #f0f4f8;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
+  padding: 60px 20px;
+  background-color: #f8f9fc;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
 `;
 
 const Grid = styled.div`
   display: grid;
-  gap: 20px;
+  gap: 30px;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   overflow-x: hidden;
   overflow-y: hidden;
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
+
   @media (max-width: 550px) {
     grid-template-columns: 1fr;
   }
 `;
 
 const Card = styled.div`
-  background: linear-gradient(135deg, #ffffff 0%, #d5dae0 100%);
-  padding: 20px;
-  margin-bottom: 15px;
+  background: linear-gradient(135deg, #ffffff 0%, #eceff1 100%);
+  padding: 30px;
+  margin-bottom: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   }
 `;
 
 const Title = styled.h2`
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15px;
 `;
 
 const Paragraph = styled.p`
   font-size: 1rem;
-  color: #34495e;
+  color: #555;
   line-height: 1.6;
-  text-align: center;
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
+  padding: 12px 25px;
   background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
     background-color: #2980b9;
+    transform: scale(1.05);
   }
 `;
 
@@ -87,47 +94,65 @@ const ModalContainer = styled.div`
 
 const ModalContent = styled.div`
   background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
+  padding: 30px;
+  border-radius: 15px;
+  width: 450px;
   text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 `;
 
 const CloseButton = styled.button`
   background-color: #e74c3c;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px 25px;
+  border-radius: 30px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 20px;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: #c0392b;
+  }
 `;
 
 const UploadButton = styled.button`
-  background-color: #3498db;
+  background-color: #2ecc71;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px 25px;
+  border-radius: 30px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 20px;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: #27ae60;
+  }
 `;
+
 const FileCard = styled.div`
-  background: linear-gradient(135deg, #ffffff 0%, #d5dae0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #eceff1 100%);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
 `;
+
 const HelthPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploads, setUploads] = useState<any[]>([]);
 
   useEffect(() => {
-    // 파일 목록을 불러오기
     axios.get('http://localhost:3001/uploads').then((response) => {
       setUploads(response.data);
     });
@@ -172,30 +197,33 @@ const HelthPage = () => {
 
   return (
     <Container>
-      <Title>오늘의 헬스 팁</Title>
-      <Grid>
-        <Card>
-          <Paragraph>
-            오늘은 전신 스트레칭을 해보세요! 몸의 유연성을 높이고 부상을
-            예방하는데 좋습니다.
-          </Paragraph>
-        </Card>
-        <Card>
-          <Paragraph>
-            헬스를 할 때 충분한 수분 섭취는 필수입니다. 운동 전후로 물을 자주
-            마시세요.
-          </Paragraph>
-        </Card>
-      </Grid>
-      <Title>오늘의 추천 운동</Title>
-      <Grid>
-        <Card>
-          <Paragraph>푸시업: 상체 근력을 강화하는 운동입니다.</Paragraph>
-        </Card>
-        <Card>
-          <Paragraph>스쿼트: 하체 근력을 강화하는 운동입니다.</Paragraph>
-        </Card>
-      </Grid>
+      <div>
+        {/* 스트레칭 팁 카드 */}
+        <Grid>
+          {['전신 스트레칭으로 몸의 유연성 증가', '운동 전후 수분 섭취는 필수'].map((tip, index) => (
+            <Card key={index}>
+              <Paragraph>{tip}</Paragraph>
+            </Card>
+          ))}
+        </Grid>
+
+        {/* 추천 운동 제목 */}
+        <Title>오늘의 추천 운동</Title>
+
+        {/* 운동 추천 카드 */}
+        <Grid>
+          {[
+            { title: '푸시업', description: '상체 근력 강화' },
+            { title: '스쿼트', description: '하체 근력 강화' },
+          ].map((exercise, index) => (
+            <Card key={index}>
+              <Paragraph>
+                {exercise.title}: {exercise.description}
+              </Paragraph>
+            </Card>
+          ))}
+        </Grid>
+      </div>
       <Title>운동 경험 공유 및 제품 리뷰</Title>
       <Grid>
         <Card>
@@ -231,9 +259,7 @@ const HelthPage = () => {
             <h3>사진 업로드</h3>
             <input type="file" onChange={handleFileChange} />
             <UploadButton onClick={handleUpload}>업로드</UploadButton>
-            <CloseButton onClick={() => setIsModalOpen(false)}>
-              닫기
-            </CloseButton>
+            <CloseButton onClick={() => setIsModalOpen(false)}>닫기</CloseButton>
           </ModalContent>
         </ModalContainer>
       )}
