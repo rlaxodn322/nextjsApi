@@ -5,9 +5,14 @@ import axios from 'axios';
 axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
-export const fetchWeatherData = async (): Promise<WeatherData1> => {
+export const fetchWeatherData = async (
+  lat: number,
+  lng: number
+): Promise<WeatherData1> => {
   try {
-    const response = await axios.get('/weather/current');
+    const response = await axios.get('/weather/current', {
+      params: { lat, lng },
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

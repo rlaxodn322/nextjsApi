@@ -86,20 +86,43 @@ const WeatherData = () => {
   const formatTemperature = (temp: number) => {
     return isCelsius ? `${temp}°C` : `${(temp * 9) / 5 + 32}°F`;
   };
-
-  // 날씨 API 데이터를 가져오는 useEffect
+  // 위치 정보와 날씨 데이터를 가져오는 useEffect
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchWeatherData(); // API 호출
-        setWeatherData(data); // 상태에 저장
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
+    const getLocationAndFetchData = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          console.log('위도:', lat, '경도:', lng); // 위도, 경도 확인
+
+          try {
+            const data = await fetchWeatherData(lat, lng); // API 호출에 위치 값 전달
+            setWeatherData(data);
+          } catch (error) {
+            console.error('날씨 데이터를 가져오는 중 오류 발생:', error);
+          }
+        });
+      } else {
+        console.error('위치 정보 사용 불가');
       }
     };
 
-    fetchData(); // 데이터 가져오기
+    getLocationAndFetchData(); // 데이터 가져오기
   }, []);
+  // // 날씨 API 데이터를 가져오는 useEffect
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await fetchWeatherData(); // API 호출
+  //       setWeatherData(data); // 상태에 저장
+  //     } catch (error) {
+  //       console.error('Error fetching weather data:', error);
+  //     }
+  //   };
+
+  //   fetchData(); // 데이터 가져오기
+  // }, []);
 
   // 데이터가 없다면 로딩 중
   if (!weatherData) {
