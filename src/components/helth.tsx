@@ -200,7 +200,10 @@ const HelthPage = () => {
       <div>
         {/* 스트레칭 팁 카드 */}
         <Grid>
-          {['전신 스트레칭으로 몸의 유연성 증가', '운동 전후 수분 섭취는 필수'].map((tip, index) => (
+          {[
+            '전신 스트레칭으로 몸의 유연성 증가',
+            '운동 전후 수분 섭취는 필수',
+          ].map((tip, index) => (
             <Card key={index}>
               <Paragraph>{tip}</Paragraph>
             </Card>
@@ -232,7 +235,7 @@ const HelthPage = () => {
           </Link>
         </Card>
         <Card>
-          <Link href="/product-reviews">
+          <Link href="/product-reviews/01">
             <Button>제품 리뷰하기</Button>
           </Link>
         </Card>
@@ -259,7 +262,9 @@ const HelthPage = () => {
             <h3>사진 업로드</h3>
             <input type="file" onChange={handleFileChange} />
             <UploadButton onClick={handleUpload}>업로드</UploadButton>
-            <CloseButton onClick={() => setIsModalOpen(false)}>닫기</CloseButton>
+            <CloseButton onClick={() => setIsModalOpen(false)}>
+              닫기
+            </CloseButton>
           </ModalContent>
         </ModalContainer>
       )}

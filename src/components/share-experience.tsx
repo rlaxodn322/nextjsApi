@@ -139,10 +139,9 @@ const FilterSelect = styled.select`
 
 const ShareExperiencePage = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [title, setTitle] = useState('');
   const [experiences, setExperiences] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [description, setDescription] = useState('');
+ 
 
   const toggleModal = () => setModalVisible(!isModalVisible);
 

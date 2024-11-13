@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
- // background-color: #f0f4f8;
+  // background-color: #f0f4f8;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 `;
@@ -69,7 +69,7 @@ const WeatherTitle = styled.h3`
   color: #2c3e50;
   margin-bottom: 10px;
   background: linear-gradient(90deg, #ff6f61, #ff8c00);
-  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   text-align: center;
 `;
