@@ -117,6 +117,7 @@ const ModalContent = styled.div`
 
   @media (max-width: 480px) {
     padding: 10px;
+    font-size: 10px;
   }
 `;
 
@@ -222,7 +223,7 @@ const PetData = () => {
 
   return (
     <Container>
-      <Title>유기견 위치 안내</Title>
+      <Title>유기동물 위치 안내</Title>
       <ButtonGroup>
         {regions.map((region) => (
           <button

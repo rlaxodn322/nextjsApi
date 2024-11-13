@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import axios from 'axios';
-import HelthModal from '../components/helthModal';
+import {
+  fetchExperiences,
+  createExperience,
+  deleteExperience,
+} from '../apis/experienceApi';
+import HelthModal from './helthModal';
 const ExperiencePageContainer = styled.div`
   padding: 40px 20px;
   background-color: #f5f7fa;
@@ -16,6 +20,10 @@ const Title = styled.h2`
   color: #333;
   font-weight: 600;
   margin-bottom: 20px;
+
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ShareButton = styled.button`
@@ -74,13 +82,15 @@ const ExperienceDescription = styled.p`
 
 const ViewButton = styled(Link)`
   display: inline-block;
-  margin-top: 15px;
-  padding: 8px 20px;
+  margin-top: 10px;
+  padding: 4px 12px; /* 패딩을 줄여 버튼의 크기를 더 작게 */
   background-color: #3498db;
   color: white;
-  font-size: 1rem;
+  font-size: 0.85rem; /* 글꼴 크기를 조금 더 작게 */
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 15px; /* 둥근 모서리를 줄임 */
+  width: 100px; /* 버튼 너비를 고정하여 너무 길어지지 않게 */
+  text-align: center;
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
@@ -89,6 +99,24 @@ const ViewButton = styled(Link)`
   }
 `;
 
+const DeleteButton = styled.button`
+  margin-top: 10px;
+  padding: 4px 12px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 100px; /* 버튼 너비를 고정 */
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+`;
 const FilterContainer = styled.div`
   margin-bottom: 20px;
   display: flex;
@@ -115,34 +143,41 @@ const ShareExperiencePage = () => {
   const [experiences, setExperiences] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [description, setDescription] = useState('');
+
   const toggleModal = () => setModalVisible(!isModalVisible);
 
   const handleSubmit = async (title: string, description: string) => {
-    const newPost = { title, description };
-
     try {
-      // 새 경험을 서버에 전송
-      await axios.post('http://localhost:3001/experience', newPost);
-
-      // 경험을 리스트에 추가 (UI에서 새로 렌더링)
-      setExperiences((prevExperiences) => [
-        ...prevExperiences,
-        { title, description }, // 서버에서 응답받은 데이터로 업데이트 가능
-      ]);
-
-      toggleModal(); // 모달 닫기
+      const newExperience = await createExperience(title, description);
+      setExperiences((preEx) => [...preEx, newExperience]);
+      toggleModal();
     } catch (error) {
-      console.error('Error submitting the post:', error);
+      console.error('error', error);
     }
   };
 
   useEffect(() => {
-    // Assuming a backend API that returns experiences
-    axios.get('http://localhost:3001/experience').then((response) => {
-      setExperiences(response.data);
-    });
+    const loadExperiences = async () => {
+      try {
+        const experiencesData = await fetchExperiences();
+        setExperiences(experiencesData);
+      } catch (error) {
+        console.error('ERROR', error);
+      }
+    };
+    loadExperiences();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteExperience(id);
+      setExperiences((preExper) =>
+        preExper.filter((experiences) => experiences.id !== id)
+      );
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -170,12 +205,8 @@ const ShareExperiencePage = () => {
 
       <ExperienceList>
         {filteredExperiences.length > 0 ? (
-          filteredExperiences.map((experience, index) => (
-            <ExperienceCard
-              key={`${experience.title}-${experience.description}-${index}`}
-            >
-              {' '}
-              {/* 고유한 key */}
+          filteredExperiences.map((experience) => (
+            <ExperienceCard key={experience.id}>
               <ExperienceTitle>{experience.title}</ExperienceTitle>
               <ExperienceDescription>
                 {experience.description.slice(0, 100)}...
@@ -183,6 +214,9 @@ const ShareExperiencePage = () => {
               <ViewButton href={`/experiences/${experience.id}`}>
                 자세히 보기
               </ViewButton>
+              <DeleteButton onClick={() => handleDelete(experience.id)}>
+                삭제
+              </DeleteButton>
             </ExperienceCard>
           ))
         ) : (
@@ -190,7 +224,7 @@ const ShareExperiencePage = () => {
         )}
       </ExperienceList>
 
-      {/* 모달을 추가합니다 */}
+      {/* Modal 컴포넌트 추가 */}
       <HelthModal
         isVisible={isModalVisible}
         onClose={toggleModal}

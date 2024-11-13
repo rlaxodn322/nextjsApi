@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ShareExperiencePage from '@/components/share-experience';
+import ShareExperiencePage from '@/components/Share-experience';
 const ExperienceContainer = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
   background-color: #f9f9f9;

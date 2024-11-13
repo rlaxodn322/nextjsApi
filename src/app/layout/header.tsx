@@ -88,7 +88,7 @@ const App: React.FC = () => (
           <NavLink>명소</NavLink>
         </Link>
         <Link href="/grid/01">
-          <NavLink>레이아웃</NavLink>
+          <NavLink>헬스</NavLink>
         </Link>
       </NavLinks>
     </NavContainer>
